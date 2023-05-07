@@ -2,16 +2,25 @@ plugins {
     id 'fabric-loom' version '1.2-SNAPSHOT'
     id 'io.github.juuxel.loom-quiltflower' version '1.8.0'
     id 'org.ajoberstar.grgit' version '5.0.0'
+    id 'io.freefair.lombok' version '8.0.1'
 }
 
-version = project.mod_version
+version = "${project.mod_version}+mc${project.minecraft_version}${grgit.status().clean ? '' : '-dirty'}"
 group = project.maven_group
+
+repositories {
+    maven {
+        url "https://maven.uku3lig.net/releases"
+    }
+}
 
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    modApi "net.uku3lig:ukulib:${project.ukulib_version}"
 }
 
 processResources {
@@ -32,11 +41,6 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
     archivesBaseName = project.archives_base_name
-
-    if (grgit != null && grgit.status().clean) {
-        withSourcesJar()
-        withJavadocJar()
-    }
 }
 
 jar {
