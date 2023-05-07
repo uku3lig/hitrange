@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "hitrange",
+  "version": "${version}",
+  "name": "hitrange",
+  "description": "show a circle around players' feet",
+  "authors": [
+    "uku"
+  ],
+  "contact": {
+    "repo": "https://github.com/uku3lig/hitrange"
+  },
+  "license": "MPL-2.0",
+  "icon": "assets/hitrange/icon.png",
+  "environment": "client",
+  "mixins": [
+    "hitrange.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13"
+  }
+}
