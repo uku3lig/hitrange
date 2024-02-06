@@ -18,7 +18,8 @@ public class HitRangeConfig implements Serializable {
     private float radius = 3.0f;
     private RenderMode renderMode = RenderMode.THICK;
     private float thickness = 0.15f;
-    private int color = 0xFFFF0000;
+    private int color = 0x80FF0000;
+    private int inRangeColor = 0x8000FF00;
     private boolean randomColors = false;
     private float height = 0.0f;
 

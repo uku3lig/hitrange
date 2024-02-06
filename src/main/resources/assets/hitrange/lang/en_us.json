@@ -5,6 +5,7 @@
   "hitrange.renderMode": "Render Mode",
   "hitrange.thickness": "Thickness",
   "hitrange.color": "Color",
+  "hitrange.inRangeColor": "In Range Color",
   "hitrange.randomColors": "Random Colors",
   "hitrange.height": "Height",
   "hitrange.mode.line": "Line",
