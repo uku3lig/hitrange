@@ -2,7 +2,12 @@
   "hitrange.enabled": "Enabled",
   "hitrange.circleSegments": "Circle Segments",
   "hitrange.radius": "Radius",
+  "hitrange.renderMode": "Render Mode",
+  "hitrange.thickness": "Thickness",
   "hitrange.color": "Color",
   "hitrange.randomColors": "Random Colors",
-  "hitrange.height": "Height"
+  "hitrange.height": "Height",
+  "hitrange.mode.line": "Line",
+  "hitrange.mode.thick": "Thick",
+  "hitrange.mode.filled": "Filled"
 }

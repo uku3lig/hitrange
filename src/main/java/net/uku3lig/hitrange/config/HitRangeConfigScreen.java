@@ -1,45 +1,36 @@
 package net.uku3lig.hitrange.config;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.SimpleOption;
-import net.minecraft.text.Text;
+import net.uku3lig.hitrange.CircleRenderer;
 import net.uku3lig.hitrange.HitRange;
+import net.uku3lig.ukulib.config.option.*;
 import net.uku3lig.ukulib.config.screen.AbstractConfigScreen;
-import net.uku3lig.ukulib.config.screen.ColorSelectScreen;
-import net.uku3lig.ukulib.utils.Ukutils;
 
 public class HitRangeConfigScreen extends AbstractConfigScreen<HitRangeConfig> {
 
     public HitRangeConfigScreen(Screen parent) {
-        super(parent, Text.of("HitRange Config"), HitRange.getManager());
+        super("HitRange Config", parent, HitRange.getManager());
     }
 
     @Override
-    protected SimpleOption<?>[] getOptions(HitRangeConfig config) {
-        return new SimpleOption[] {
-                SimpleOption.ofBoolean("hitrange.enabled", config.isEnabled(), config::setEnabled),
-                new SimpleOption<>("hitrange.circleSegments", SimpleOption.emptyTooltip(), GameOptions::getGenericValueText,
-                        new SimpleOption.ValidatingIntSliderCallbacks(3, 360),
-                        config.getCircleSegments(), config::setCircleSegments),
-                new SimpleOption<>("hitrange.radius", SimpleOption.emptyTooltip(), this::getGenericValueText,
-                        new SimpleOption.ValidatingIntSliderCallbacks(1, 100).withModifier(i -> i / 20.0f, f -> (int)(f * 20)),
-                        Codec.floatRange(0.05f, 5), config.getRadius(), config::setRadius),
-                Ukutils.createOpenButton("hitrange.color", colorValue(config.getColor()),
-                        parent -> new ColorSelectScreen(Text.of("color select"), parent, config::setColor, config.getColor(), manager)),
-                SimpleOption.ofBoolean("hitrange.randomColors", config.isRandomColors(), config::setRandomColors),
-                new SimpleOption<>("hitrange.height", SimpleOption.emptyTooltip(), this::getGenericValueText,
-                        new SimpleOption.ValidatingIntSliderCallbacks(0, 500).withModifier(i -> i / 100.0f, f -> (int)(f * 100)),
-                        Codec.floatRange(0, 5), config.getHeight(), config::setHeight),
+    protected WidgetCreator[] getWidgets(HitRangeConfig config) {
+        return new WidgetCreator[]{
+                CyclingOption.ofBoolean("hitrange.enabled", config.isEnabled(), config::setEnabled),
+                new IntSliderOption("hitrange.circleSegments", config.getCircleSegments(), config::setCircleSegments, IntSliderOption.DEFAULT_INT_TO_TEXT, 3, 180),
+                new SliderOption("hitrange.radius", config.getRadius(), d -> config.setRadius((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0.05, 5, 0.05),
+                CyclingOption.ofTranslatableEnum("hitrange.renderMode", HitRangeConfig.RenderMode.class, config.getRenderMode(), config::setRenderMode),
+                new SliderOption("hitrange.thickness", config.getThickness(), d -> config.setThickness((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0.01, 2, 0.01),
+                new ColorOption("hitrange.color", config.getColor(), config::setColor, true),
+                CyclingOption.ofBoolean("hitrange.randomColors", config.isRandomColors(), config::setRandomColors),
+                new SliderOption("hitrange.height", config.getHeight(), d -> config.setHeight((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0, 5, 0.01),
         };
     }
 
-    private Text getGenericValueText(Text prefix, float value) {
-		return Text.translatable("options.generic_value", prefix, "%.2f".formatted(value));
-	}
+    @Override
+    public void removed() {
+        super.removed();
 
-    private String colorValue(int color) {
-        return "#" + Integer.toHexString(color);
+        HitRangeConfig config = manager.getConfig();
+        CircleRenderer.computeAngles(config.getRenderMode(), config.getCircleSegments(), config.getRadius(), config.getThickness());
     }
 }

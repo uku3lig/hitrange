@@ -1,12 +1,15 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
-    id 'io.github.juuxel.loom-quiltflower' version '1.8.0'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'org.ajoberstar.grgit' version '5.0.0'
-    id 'io.freefair.lombok' version '8.0.1'
+    id 'io.freefair.lombok' version '8.4'
 }
 
 version = "${project.mod_version}+mc${project.minecraft_version}${grgit.status().clean ? '' : '-dirty'}"
 group = project.maven_group
+
+loom {
+    accessWidenerPath = file("src/main/resources/hitrange.accesswidener")
+}
 
 repositories {
     maven {
@@ -32,15 +35,15 @@ processResources {
     }
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
 }
 
 java {
     archivesBaseName = project.archives_base_name
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {

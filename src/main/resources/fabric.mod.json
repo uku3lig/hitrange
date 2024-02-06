@@ -21,8 +21,9 @@
   "mixins": [
     "hitrange.mixins.json"
   ],
+  "accessWidener": "hitrange.accesswidener",
   "depends": {
     "fabricloader": ">=0.13",
-    "ukulib": ">=0.6.1"
+    "ukulib": "^1.1.1"
   }
 }
