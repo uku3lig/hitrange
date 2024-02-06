@@ -22,6 +22,7 @@ public class HitRangeConfig implements Serializable {
     private int inRangeColor = 0x8000FF00;
     private boolean randomColors = false;
     private float height = 0.0f;
+    private boolean nearestOnly = false;
 
     // todo maybe add colors for being in range, etc?
 

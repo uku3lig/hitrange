@@ -24,6 +24,7 @@ public class HitRangeConfigScreen extends AbstractConfigScreen<HitRangeConfig> {
                 new ColorOption("hitrange.inRangeColor", config.getInRangeColor(), config::setInRangeColor, true),
                 CyclingOption.ofBoolean("hitrange.randomColors", config.isRandomColors(), config::setRandomColors),
                 new SliderOption("hitrange.height", config.getHeight(), d -> config.setHeight((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0, 5, 0.01),
+                CyclingOption.ofBoolean("hitrange.nearestOnly", config.isNearestOnly(), config::setNearestOnly),
         };
     }
 

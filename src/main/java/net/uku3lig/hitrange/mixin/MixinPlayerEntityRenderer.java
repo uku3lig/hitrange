@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(PlayerEntityRenderer.class)
 public abstract class MixinPlayerEntityRenderer  {
     @Inject(method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
@@ -22,6 +24,8 @@ public abstract class MixinPlayerEntityRenderer  {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (!config.isEnabled() || entity.equals(player)) return;
+        if (config.isNearestOnly() && !Objects.equals(player, HitRange.getNearest())) return;
+        if (entity.isDead() || entity.isInvisibleTo(player) || entity.isSleeping()) return;
 
         int color = config.getColor();
         if (config.isRandomColors()) {
