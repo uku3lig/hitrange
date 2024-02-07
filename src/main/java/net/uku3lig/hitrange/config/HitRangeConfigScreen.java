@@ -70,6 +70,7 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
                     new IntSliderOption("hitrange.circleSegments", config.getCircleSegments(), config::setCircleSegments, IntSliderOption.DEFAULT_INT_TO_TEXT, 3, 180),
                     CyclingOption.ofBoolean("hitrange.preventZFight", config.isPreventZFight(), config::setPreventZFight),
                     new IntSliderOption("hitrange.maxSearchDistance", config.getMaxSearchDistance(), config::setMaxSearchDistance, IntSliderOption.DEFAULT_INT_TO_TEXT, 1, 100),
+                    new IntSliderOption("hitrange.maxDistance", config.getMaxDistance(), config::setMaxDistance, IntSliderOption.DEFAULT_INT_TO_TEXT, 1, 200),
                     new SimpleButton("hitrange.computeAngles", b -> CircleRenderer.computeAngles()),
             };
         }

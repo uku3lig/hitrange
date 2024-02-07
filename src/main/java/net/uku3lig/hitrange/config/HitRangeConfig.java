@@ -27,7 +27,8 @@ public class HitRangeConfig implements Serializable {
     // advanced
     private int circleSegments = 60;
     private boolean preventZFight = true;
-    private int maxSearchDistance = 30;
+    private int maxDistance = 100;
+    private int maxSearchDistance = 50;
 
     @Getter
     @AllArgsConstructor

@@ -24,6 +24,7 @@ public abstract class MixinPlayerEntityRenderer  {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (!config.isEnabled() || entity.equals(player)) return;
+        if (!entity.isInRange(player, config.getMaxDistance())) return;
         if (config.isNearestOnly() && !Objects.equals(entity, HitRange.getNearest())) return;
         if (entity.isDead() || entity.isInvisibleTo(player) || entity.isSleeping()) return;
 
