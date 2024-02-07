@@ -34,8 +34,10 @@ public abstract class MixinPlayerEntityRenderer  {
             color = config.getInRangeColor();
         }
 
-        // z fighting grrrr !!!!
-        float dy = (entity.isInSneakingPose() ? 0.125f : 0) + config.getHeight() + ((float) entity.squaredDistanceTo(player) / 10_000.0f);
+        float dy = (entity.isInSneakingPose() ? 0.125f : 0) + config.getHeight();
+        if (config.isPreventZFight()) {
+            dy += (float) entity.squaredDistanceTo(player) / 10_000.0f;
+        }
 
         CircleRenderer.drawCircle(matrices, vertexConsumers, config.getRenderMode(), dy, color);
     }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minecraft.util.TranslatableOption;
+import net.uku3lig.hitrange.HitRange;
 
 import java.io.Serializable;
 
@@ -13,18 +14,21 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HitRangeConfig implements Serializable {
+    // general
     private boolean enabled = true;
-    private int circleSegments = 60;
     private float radius = 3.0f;
     private RenderMode renderMode = RenderMode.THICK;
     private float thickness = 0.15f;
+    private float height = 0.0f;
+    private boolean nearestOnly = false;
+    // colors
     private int color = 0x80FF0000;
     private int inRangeColor = 0x8000FF00;
     private boolean randomColors = false;
-    private float height = 0.0f;
-    private boolean nearestOnly = false;
-
-    // todo maybe add colors for being in range, etc?
+    // advanced
+    private int circleSegments = 60;
+    private boolean preventZFight = true;
+    private int maxSearchDistance = 30;
 
     @Getter
     @AllArgsConstructor
