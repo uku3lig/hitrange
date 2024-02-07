@@ -9,6 +9,9 @@
   "hitrange.randomColors": "Random Colors",
   "hitrange.height": "Height",
   "hitrange.nearestOnly": "Nearest Player Only",
+  "hitrange.preventZFight": "Prevent Z Fighting",
+  "hitrange.maxSearchDistance": "Max Search Distance",
+  "hitrange.computeAngles": "Recalculate Angles",
   "hitrange.mode.line": "Line",
   "hitrange.mode.thick": "Thick",
   "hitrange.mode.filled": "Filled"
