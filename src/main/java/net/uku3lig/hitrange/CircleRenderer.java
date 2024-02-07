@@ -24,8 +24,7 @@ public class CircleRenderer extends RenderPhase {
     private static final List<Angle> angles = new ArrayList<>();
 
     static {
-        HitRangeConfig config = HitRange.getManager().getConfig();
-        computeAngles(config.getRenderMode(), config.getCircleSegments(), config.getRadius(), config.getThickness());
+        computeAngles();
     }
 
     public static void drawCircle(MatrixStack matrices, VertexConsumerProvider vertexConsumers, HitRangeConfig.RenderMode mode, float dy, int argb) {
@@ -83,27 +82,28 @@ public class CircleRenderer extends RenderPhase {
         drawCircleLineStrip(matrices, vertices, dy, argb);
     }
 
-    public static void computeAngles(HitRangeConfig.RenderMode mode, int segments, float radius, float thickness) {
+    public static void computeAngles() {
         angles.clear();
+        HitRangeConfig config = HitRange.getManager().getConfig();
 
-        if (mode == HitRangeConfig.RenderMode.THICK) {
-            for (int i = 0; i < segments; i++) {
-                float angle = 2.0f * MathHelper.PI * ((float) i / segments);
-                float dst = radius - (thickness / 2);
+        if (config.getRenderMode() == HitRangeConfig.RenderMode.THICK) {
+            for (int i = 0; i < config.getCircleSegments(); i++) {
+                float angle = 2.0f * MathHelper.PI * ((float) i / config.getCircleSegments());
+                float dst = config.getRadius() - (config.getThickness() / 2);
 
                 float dx = dst * MathHelper.sin(angle);
                 float dz = dst * MathHelper.cos(angle);
 
-                float farDx = (dst + thickness) * MathHelper.sin(angle);
-                float farDz = (dst + thickness) * MathHelper.cos(angle);
+                float farDx = (dst + config.getThickness()) * MathHelper.sin(angle);
+                float farDz = (dst + config.getThickness()) * MathHelper.cos(angle);
 
                 angles.add(new Angle(dx, dz, farDx, farDz));
             }
         } else {
-            for (int i = 0; i < segments; i++) {
-                float angle = 2.0f * MathHelper.PI * ((float) i / segments);
-                float dx = radius * MathHelper.sin(angle);
-                float dz = radius * MathHelper.cos(angle);
+            for (int i = 0; i < config.getCircleSegments(); i++) {
+                float angle = 2.0f * MathHelper.PI * ((float) i / config.getCircleSegments());
+                float dx = config.getRadius() * MathHelper.sin(angle);
+                float dz = config.getRadius() * MathHelper.cos(angle);
 
                 angles.add(new Angle(dx, dz));
             }

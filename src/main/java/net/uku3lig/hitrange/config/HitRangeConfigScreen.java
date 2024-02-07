@@ -2,6 +2,7 @@ package net.uku3lig.hitrange.config;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tab.Tab;
+import net.uku3lig.hitrange.CircleRenderer;
 import net.uku3lig.hitrange.HitRange;
 import net.uku3lig.ukulib.config.option.*;
 import net.uku3lig.ukulib.config.option.widget.ButtonTab;
@@ -15,6 +16,12 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
     @Override
     protected Tab[] getTabs(HitRangeConfig config) {
         return new Tab[]{new GeneralTab(), new ColorsTab(), new AdvancedTab()};
+    }
+
+    @Override
+    public void removed() {
+        super.removed();
+        CircleRenderer.computeAngles();
     }
 
     private class GeneralTab extends ButtonTab<HitRangeConfig> {
@@ -63,6 +70,7 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
                     new IntSliderOption("hitrange.circleSegments", config.getCircleSegments(), config::setCircleSegments, IntSliderOption.DEFAULT_INT_TO_TEXT, 3, 180),
                     CyclingOption.ofBoolean("hitrange.preventZFight", config.isPreventZFight(), config::setPreventZFight),
                     new IntSliderOption("hitrange.maxSearchDistance", config.getMaxSearchDistance(), config::setMaxSearchDistance, IntSliderOption.DEFAULT_INT_TO_TEXT, 1, 100),
+                    new SimpleButton("hitrange.computeAngles", b -> CircleRenderer.computeAngles()),
             };
         }
     }

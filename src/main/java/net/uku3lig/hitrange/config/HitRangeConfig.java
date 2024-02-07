@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minecraft.util.TranslatableOption;
-import net.uku3lig.hitrange.HitRange;
 
 import java.io.Serializable;
 
