@@ -24,7 +24,7 @@ public abstract class MixinPlayerEntityRenderer  {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (!config.isEnabled() || entity.equals(player)) return;
-        if (config.isNearestOnly() && !Objects.equals(player, HitRange.getNearest())) return;
+        if (config.isNearestOnly() && !Objects.equals(entity, HitRange.getNearest())) return;
         if (entity.isDead() || entity.isInvisibleTo(player) || entity.isSleeping()) return;
 
         int color = config.getColor();
