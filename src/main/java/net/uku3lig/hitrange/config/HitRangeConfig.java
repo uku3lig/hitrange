@@ -20,9 +20,10 @@ public class HitRangeConfig implements Serializable {
     private float thickness = 0.15f;
     private float height = 0.0f;
     private boolean nearestOnly = false;
+    private boolean showSelf = true;
     // colors
-    private int color = 0x80FF0000;
-    private int inRangeColor = 0x8000FF00;
+    private int color = 0x40FF0000;
+    private int inRangeColor = 0x4000FF00;
     private boolean randomColors = false;
     // advanced
     private int circleSegments = 60;

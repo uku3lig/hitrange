@@ -28,18 +28,6 @@ public abstract class MixinPlayerEntityRenderer  {
         if (config.isNearestOnly() && !Objects.equals(entity, HitRange.getNearest())) return;
         if (entity.isDead() || entity.isInvisibleTo(player) || entity.isSleeping()) return;
 
-        int color = config.getColor();
-        if (config.isRandomColors()) {
-            color = entity.getNameForScoreboard().hashCode() | 0xFF000000;
-        } else if (entity.isInRange(player, config.getRadius())) {
-            color = config.getInRangeColor();
-        }
-
-        float dy = (entity.isInSneakingPose() ? 0.125f : 0) + config.getHeight();
-        if (config.isPreventZFight()) {
-            dy += (float) entity.squaredDistanceTo(player) / 10_000.0f;
-        }
-
-        CircleRenderer.drawCircle(matrices, vertexConsumers, config.getRenderMode(), dy, color);
+        CircleRenderer.drawCircle(matrices, vertexConsumers, entity);
     }
 }

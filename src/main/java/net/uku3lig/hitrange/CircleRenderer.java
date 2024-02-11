@@ -1,7 +1,10 @@
 package net.uku3lig.hitrange;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import net.uku3lig.hitrange.config.HitRangeConfig;
 import org.joml.Matrix3f;
@@ -9,17 +12,12 @@ import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CircleRenderer extends RenderPhase {
-    private static final RenderLayer.MultiPhase TRIANGLE_FAN = RenderLayer.of(
-            "triangle_fan",
-            VertexFormats.POSITION_COLOR,
-            VertexFormat.DrawMode.TRIANGLE_FAN,
-            1536,
-            false,
-            true,
-            RenderLayer.MultiPhaseParameters.builder().program(COLOR_PROGRAM).transparency(TRANSLUCENT_TRANSPARENCY).cull(DISABLE_CULLING).build(false)
-    );
+    private static final RenderLayer.MultiPhase DEBUG_LINE_STRIP = makeLayer(VertexFormat.DrawMode.DEBUG_LINE_STRIP);
+    private static final RenderLayer.MultiPhase DEBUG_QUADS = makeLayer(VertexFormat.DrawMode.QUADS);
+    private static final RenderLayer.MultiPhase TRIANGLE_FAN = makeLayer(VertexFormat.DrawMode.TRIANGLE_FAN);
 
     private static final List<Angle> angles = new ArrayList<>();
 
@@ -27,23 +25,33 @@ public class CircleRenderer extends RenderPhase {
         computeAngles();
     }
 
-    public static void drawCircle(MatrixStack matrices, VertexConsumerProvider vertexConsumers, HitRangeConfig.RenderMode mode, float dy, int argb) {
-        matrices.push();
+    public static void drawCircle(MatrixStack matrices, VertexConsumerProvider vertexConsumers, LivingEntity entity) {
+        HitRangeConfig config = HitRange.getManager().getConfig();
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-        RenderLayer layer = switch (mode) {
-            case LINE -> RenderLayer.getDebugLineStrip(1);
-            case THICK -> RenderLayer.getDebugQuads();
+        int color = config.getColor();
+        if (config.isRandomColors()) {
+            color = entity.getNameForScoreboard().hashCode() | 0xFF000000;
+        } else if (!entity.equals(player) && entity.isInRange(player, config.getRadius())) {
+            color = config.getInRangeColor();
+        }
+
+        float dy = (entity.isInSneakingPose() ? 0.125f : 0) + config.getHeight();
+
+        RenderLayer layer = switch (config.getRenderMode()) {
+            case LINE -> DEBUG_LINE_STRIP;
+            case THICK -> DEBUG_QUADS;
             case FILLED -> TRIANGLE_FAN;
         };
 
         VertexConsumer vertices = vertexConsumers.getBuffer(layer);
 
-        switch (mode) {
-            case LINE -> drawCircleLineStrip(matrices, vertices, dy, argb);
-            case THICK -> drawCircleQuad(matrices, vertices, dy, argb);
-            case FILLED -> drawCircleTriangleFan(matrices, vertices, dy, argb);
+        matrices.push();
+        switch (config.getRenderMode()) {
+            case LINE -> drawCircleLineStrip(matrices, vertices, dy, color);
+            case THICK -> drawCircleQuad(matrices, vertices, dy, color);
+            case FILLED -> drawCircleTriangleFan(matrices, vertices, dy, color);
         }
-
         matrices.pop();
     }
 
@@ -108,8 +116,23 @@ public class CircleRenderer extends RenderPhase {
                 angles.add(new Angle(dx, dz));
             }
         }
+    }
 
+    private static RenderLayer.MultiPhase makeLayer(VertexFormat.DrawMode mode) {
+        String name = "hitrange_" + mode.name().toLowerCase(Locale.ROOT);
 
+        return RenderLayer.of(name, VertexFormats.POSITION_COLOR, mode, 1536, false, true,
+                RenderLayer.MultiPhaseParameters.builder()
+                        .program(COLOR_PROGRAM)
+                        .transparency(TRANSLUCENT_TRANSPARENCY)
+                        .cull(ENABLE_CULLING)
+                        .lightmap(ENABLE_LIGHTMAP)
+                        .overlay(ENABLE_OVERLAY_COLOR)
+                        .writeMaskState(COLOR_MASK)
+                        .depthTest(LEQUAL_DEPTH_TEST)
+                        .layering(VIEW_OFFSET_Z_LAYERING)
+                        .build(false)
+        );
     }
 
     // trolling
