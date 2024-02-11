@@ -54,6 +54,7 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
                     new ColorOption("hitrange.color", config.getColor(), config::setColor, true),
                     new ColorOption("hitrange.inRangeColor", config.getInRangeColor(), config::setInRangeColor, true),
                     CyclingOption.ofBoolean("hitrange.randomColors", config.isRandomColors(), config::setRandomColors),
+                    CyclingOption.ofBoolean("hitrange.colorWhenInRange", config.isColorWhenInRange(), config::setColorWhenInRange)
             };
         }
     }

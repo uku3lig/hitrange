@@ -7,6 +7,7 @@
   "hitrange.color": "Color",
   "hitrange.inRangeColor": "In Range Color",
   "hitrange.randomColors": "Random Colors",
+  "hitrange.colorWhenInRange": "Change Color When In Range",
   "hitrange.height": "Height",
   "hitrange.nearestOnly": "Nearest Player Only",
   "hitrange.showSelf": "Show Own Circle",

@@ -25,6 +25,7 @@ public class HitRangeConfig implements Serializable {
     private int color = 0x40FF0000;
     private int inRangeColor = 0x4000FF00;
     private boolean randomColors = false;
+    private boolean colorWhenInRange = true;
     // advanced
     private int circleSegments = 60;
     private int maxDistance = 100;

@@ -32,7 +32,7 @@ public class CircleRenderer extends RenderPhase {
         int color = config.getColor();
         if (config.isRandomColors()) {
             color = entity.getNameForScoreboard().hashCode() | 0xFF000000;
-        } else if (!entity.equals(player) && entity.isInRange(player, config.getRadius())) {
+        } else if (config.isColorWhenInRange() && !entity.equals(player) && entity.isInRange(player, config.getRadius())) {
             color = config.getInRangeColor();
         }
 
