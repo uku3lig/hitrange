@@ -27,7 +27,6 @@ public class HitRangeConfig implements Serializable {
     private boolean randomColors = false;
     // advanced
     private int circleSegments = 60;
-    private boolean preventZFight = true;
     private int maxDistance = 100;
     private int maxSearchDistance = 50;
 

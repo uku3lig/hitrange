@@ -38,6 +38,7 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
                     new SliderOption("hitrange.thickness", config.getThickness(), d -> config.setThickness((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0.01, 2, 0.01),
                     new SliderOption("hitrange.height", config.getHeight(), d -> config.setHeight((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0, 5, 0.01),
                     CyclingOption.ofBoolean("hitrange.nearestOnly", config.isNearestOnly(), config::setNearestOnly),
+                    CyclingOption.ofBoolean("hitrange.showSelf", config.isShowSelf(), config::setShowSelf),
             };
         }
     }
@@ -68,7 +69,6 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
                     new TextOption("Machine, turn back §onow§r."),
                     new TextOption("This config tab is §onot§r for your kind."),
                     new IntSliderOption("hitrange.circleSegments", config.getCircleSegments(), config::setCircleSegments, IntSliderOption.DEFAULT_INT_TO_TEXT, 3, 180),
-                    CyclingOption.ofBoolean("hitrange.preventZFight", config.isPreventZFight(), config::setPreventZFight),
                     new IntSliderOption("hitrange.maxSearchDistance", config.getMaxSearchDistance(), config::setMaxSearchDistance, IntSliderOption.DEFAULT_INT_TO_TEXT, 1, 100),
                     new IntSliderOption("hitrange.maxDistance", config.getMaxDistance(), config::setMaxDistance, IntSliderOption.DEFAULT_INT_TO_TEXT, 1, 200),
                     new SimpleButton("hitrange.computeAngles", b -> CircleRenderer.computeAngles()),
