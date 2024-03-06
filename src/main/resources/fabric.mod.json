@@ -24,6 +24,6 @@
   "accessWidener": "hitrange.accesswidener",
   "depends": {
     "fabricloader": ">=0.13",
-    "ukulib": "^1.1.1"
+    "ukulib": "^0.7.0"
   }
 }

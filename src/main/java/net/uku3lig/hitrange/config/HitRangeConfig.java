@@ -5,14 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minecraft.util.TranslatableOption;
+import net.minecraft.util.function.ValueLists;
+import net.uku3lig.ukulib.config.IConfig;
 
-import java.io.Serializable;
+import java.util.function.IntFunction;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HitRangeConfig implements Serializable {
+public class HitRangeConfig implements IConfig<HitRangeConfig> {
     // general
     private boolean enabled = true;
     private float radius = 3.0f;
@@ -31,6 +33,11 @@ public class HitRangeConfig implements Serializable {
     private int maxDistance = 100;
     private int maxSearchDistance = 50;
 
+    @Override
+    public HitRangeConfig defaultConfig() {
+        return new HitRangeConfig();
+    }
+
     @Getter
     @AllArgsConstructor
     public enum RenderMode implements TranslatableOption {
@@ -39,7 +46,13 @@ public class HitRangeConfig implements Serializable {
         FILLED(2, "hitrange.mode.filled"),
         ;
 
+        private static final IntFunction<RenderMode> BY_ID = ValueLists.createIdToValueFunction(RenderMode::getId, values(), ValueLists.OutOfBoundsHandling.WRAP);
+
         private final int id;
         private final String translationKey;
+
+        public static RenderMode byId(int id) {
+            return BY_ID.apply(id);
+        }
     }
 }

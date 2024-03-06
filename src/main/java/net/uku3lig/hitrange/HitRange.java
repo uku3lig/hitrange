@@ -8,7 +8,7 @@ import net.uku3lig.ukulib.config.ConfigManager;
 
 public class HitRange {
     @Getter
-    private static final ConfigManager<HitRangeConfig> manager = ConfigManager.createDefault(HitRangeConfig.class, "hitrange");
+    private static final ConfigManager<HitRangeConfig> manager = ConfigManager.create(HitRangeConfig.class, "hitrange");
 
     @Getter @Setter
     private static PlayerEntity nearest;
