@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "hitrange",
   "version": "${version}",
-  "name": "hitrange",
+  "name": "HitRange",
   "description": "show a circle around players' feet",
   "authors": [
     "uku"
@@ -23,7 +23,8 @@
   ],
   "accessWidener": "hitrange.accesswidener",
   "depends": {
-    "fabricloader": ">=0.13",
-    "ukulib": "^1.1.1"
+    "minecraft": ">=1.20.5",
+    "fabricloader": ">=0.15",
+    "ukulib": "^1.2.0"
   }
 }

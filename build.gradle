@@ -1,10 +1,9 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
-    id 'org.ajoberstar.grgit' version '5.0.0'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'io.freefair.lombok' version '8.4'
 }
 
-version = "${project.mod_version}+mc${project.minecraft_version}${grgit.status().clean ? '' : '-dirty'}"
+version = "${project.mod_version}+mc${project.minecraft_version}"
 group = project.maven_group
 
 loom {
@@ -35,19 +34,21 @@ processResources {
     }
 }
 
+base {
+    archivesName = project.archives_base_name
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
 }
 
-java {
-    archivesBaseName = project.archives_base_name
-
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.base.archivesName.get()}" }
     }
 }
