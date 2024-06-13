@@ -23,11 +23,12 @@ public class MixinWorldRenderer {
     @Shadow @Final private BufferBuilderStorage bufferBuilders;
 
     @Inject(method = "render", at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V"))
-    public void renderFirstPersonCircle(float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local(ordinal = 0) MatrixStack matrices) {
+    public void renderFirstPersonCircle(RenderTickCounter tickCounter, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci, @Local(ordinal = 0) MatrixStack matrices) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         HitRangeConfig config = HitRange.getManager().getConfig();
         if (player == null || !config.isShowSelf()) return;
 
+        float tickDelta = tickCounter.getTickDelta(false);
         double px = MathHelper.lerp(tickDelta, player.lastRenderX, player.getX());
         double py = MathHelper.lerp(tickDelta, player.lastRenderY, player.getY());
         double pz = MathHelper.lerp(tickDelta, player.lastRenderZ, player.getZ());
