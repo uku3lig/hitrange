@@ -1,4 +1,5 @@
 {
+  "hitrange.name": "HitRange",
   "hitrange.enabled": "Enabled",
   "hitrange.circleSegments": "Circle Segments",
   "hitrange.radius": "Radius",
@@ -17,5 +18,7 @@
   "hitrange.computeAngles": "Recalculate Angles",
   "hitrange.mode.line": "Line",
   "hitrange.mode.thick": "Thick",
-  "hitrange.mode.filled": "Filled"
+  "hitrange.mode.filled": "Filled",
+  "hitrange.keybind.toggle": "Toggle HitRange",
+  "hitrange.keybind.toggle.msg": "HitRange toggled"
 }

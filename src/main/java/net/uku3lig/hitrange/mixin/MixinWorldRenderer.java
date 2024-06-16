@@ -26,7 +26,7 @@ public class MixinWorldRenderer {
     public void renderFirstPersonCircle(RenderTickCounter tickCounter, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci, @Local(ordinal = 0) MatrixStack matrices) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         HitRangeConfig config = HitRange.getManager().getConfig();
-        if (player == null || !config.isShowSelf()) return;
+        if (!config.isEnabled() || player == null || !config.isShowSelf()) return;
 
         float tickDelta = tickCounter.getTickDelta(false);
         double px = MathHelper.lerp(tickDelta, player.lastRenderX, player.getX());

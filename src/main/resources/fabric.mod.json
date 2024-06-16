@@ -14,6 +14,9 @@
   "icon": "assets/hitrange/icon.png",
   "environment": "client",
   "entrypoints": {
+    "client": [
+      "net.uku3lig.hitrange.HitRange"
+    ],
     "ukulib": [
       "net.uku3lig.hitrange.UkulibHook"
     ]
@@ -25,6 +28,6 @@
   "depends": {
     "minecraft": ">=1.21",
     "fabricloader": ">=0.15",
-    "ukulib": "^1.3.0"
+    "ukulib": "^1.4.0"
   }
 }
