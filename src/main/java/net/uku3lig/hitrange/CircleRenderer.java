@@ -3,9 +3,10 @@ package net.uku3lig.hitrange;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.uku3lig.hitrange.config.HitRangeConfig;
 import org.joml.Matrix4f;
 
@@ -24,18 +25,21 @@ public class CircleRenderer extends RenderPhase {
         computeAngles();
     }
 
-    public static void drawCircle(MatrixStack matrices, VertexConsumerProvider vertexConsumers, LivingEntity entity) {
+    public static void drawCircle(MatrixStack matrices, VertexConsumerProvider vertexConsumers, PlayerEntityRenderState state) {
         HitRangeConfig config = HitRange.getManager().getConfig();
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) return;
+
+        Vec3d entityPos = new Vec3d(state.x, state.y, state.z);
 
         int color = config.getColor();
         if (config.isRandomColors()) {
-            color = entity.getNameForScoreboard().hashCode() | 0xFF000000;
-        } else if (config.isColorWhenInRange() && !entity.equals(player) && entity.isInRange(player, config.getRadius())) {
+            color = state.name.hashCode() | 0xFF000000;
+        } else if (config.isColorWhenInRange() && state.id != player.getId() && entityPos.isInRange(player.getPos(), config.getRadius())) {
             color = config.getInRangeColor();
         }
 
-        float dy = (entity.isInSneakingPose() ? 0.125f : 0) + config.getHeight();
+        float dy = (state.sneaking ? 0.125f : 0) + config.getHeight();
 
         RenderLayer layer = switch (config.getRenderMode()) {
             case LINE -> DEBUG_LINE_STRIP;
@@ -119,7 +123,7 @@ public class CircleRenderer extends RenderPhase {
 
         return RenderLayer.of(name, VertexFormats.POSITION_COLOR, mode, 1536, false, true,
                 RenderLayer.MultiPhaseParameters.builder()
-                        .program(COLOR_PROGRAM)
+                        .program(RenderPhase.POSITION_COLOR_PROGRAM)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
                         .cull(ENABLE_CULLING)
                         .lightmap(ENABLE_LIGHTMAP)

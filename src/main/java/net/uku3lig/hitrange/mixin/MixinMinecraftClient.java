@@ -2,7 +2,7 @@ package net.uku3lig.hitrange.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.ai.TargetPredicate;
+import net.minecraft.entity.player.PlayerEntity;
 import net.uku3lig.hitrange.HitRange;
 import net.uku3lig.hitrange.config.HitRangeConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,11 +18,8 @@ public class MixinMinecraftClient {
         HitRangeConfig config = HitRange.getManager().getConfig();
 
         if (config.isNearestOnly() && player != null) {
-            TargetPredicate predicate = TargetPredicate.DEFAULT
-                    .setBaseMaxDistance(config.getMaxSearchDistance())
-                    .setPredicate(e -> !e.equals(player));
-
-            HitRange.setNearest(player.getWorld().getClosestPlayer(predicate, player));
+            PlayerEntity nearest = player.getWorld().getClosestPlayer(player.getX(), player.getY(), player.getZ(), config.getMaxSearchDistance(), e -> !e.equals(player));
+            HitRange.setNearest(nearest);
         }
     }
 }

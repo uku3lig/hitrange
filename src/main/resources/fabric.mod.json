@@ -26,8 +26,8 @@
   ],
   "accessWidener": "hitrange.accesswidener",
   "depends": {
-    "minecraft": ">=1.21",
-    "fabricloader": ">=0.15",
-    "ukulib": "^1.4.0"
+    "minecraft": ">=1.21.2",
+    "fabricloader": ">=0.16",
+    "ukulib": "^1.5.0"
   }
 }
