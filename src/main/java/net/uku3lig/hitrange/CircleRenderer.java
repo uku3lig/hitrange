@@ -1,6 +1,8 @@
 package net.uku3lig.hitrange;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
@@ -15,9 +17,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class CircleRenderer extends RenderPhase {
-    private static final RenderLayer.MultiPhase DEBUG_LINE_STRIP = makeLayer(VertexFormat.DrawMode.DEBUG_LINE_STRIP);
-    private static final RenderLayer.MultiPhase DEBUG_QUADS = makeLayer(VertexFormat.DrawMode.QUADS);
-    private static final RenderLayer.MultiPhase TRIANGLE_FAN = makeLayer(VertexFormat.DrawMode.TRIANGLE_FAN);
+    private static final RenderLayer.MultiPhase DEBUG_LINE_STRIP = makeLayer(RenderPipelines.DEBUG_LINE_STRIP);
+    private static final RenderLayer.MultiPhase DEBUG_QUADS = makeLayer(RenderPipelines.DEBUG_QUADS);
+    private static final RenderLayer.MultiPhase TRIANGLE_FAN = makeLayer(RenderPipelines.DEBUG_TRIANGLE_FAN);
 
     private static final List<Angle> angles = new ArrayList<>();
 
@@ -118,18 +120,13 @@ public class CircleRenderer extends RenderPhase {
         }
     }
 
-    private static RenderLayer.MultiPhase makeLayer(VertexFormat.DrawMode mode) {
-        String name = "hitrange_" + mode.name().toLowerCase(Locale.ROOT);
+    private static RenderLayer.MultiPhase makeLayer(RenderPipeline pipeline) {
+        String name = "hitrange_" + pipeline.getClass().getSimpleName().toLowerCase(Locale.ROOT);
 
-        return RenderLayer.of(name, VertexFormats.POSITION_COLOR, mode, 1536, false, true,
+        return RenderLayer.of(name, 1536, false, true, pipeline,
                 RenderLayer.MultiPhaseParameters.builder()
-                        .program(RenderPhase.POSITION_COLOR_PROGRAM)
-                        .transparency(TRANSLUCENT_TRANSPARENCY)
-                        .cull(ENABLE_CULLING)
                         .lightmap(ENABLE_LIGHTMAP)
                         .overlay(ENABLE_OVERLAY_COLOR)
-                        .writeMaskState(COLOR_MASK)
-                        .depthTest(LEQUAL_DEPTH_TEST)
                         .layering(VIEW_OFFSET_Z_LAYERING)
                         .build(false)
         );

@@ -34,7 +34,7 @@ public class MixinWorldRenderer {
         HitRangeConfig config = HitRange.getManager().getConfig();
         if (!config.isEnabled() || player == null || !config.isShowSelf()) return;
 
-        float tickDelta = tickCounter.getTickDelta(false);
+        float tickDelta = tickCounter.getTickProgress(false);
         double px = MathHelper.lerp(tickDelta, player.lastRenderX, player.getX());
         double py = MathHelper.lerp(tickDelta, player.lastRenderY, player.getY());
         double pz = MathHelper.lerp(tickDelta, player.lastRenderZ, player.getZ());
