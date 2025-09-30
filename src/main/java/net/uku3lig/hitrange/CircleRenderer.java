@@ -27,7 +27,15 @@ public class CircleRenderer extends RenderPhase {
         computeAngles();
     }
 
-    public static void drawCircle(MatrixStack matrices, VertexConsumerProvider vertexConsumers, PlayerEntityRenderState state) {
+    public static RenderLayer getCurrentLayer() {
+        return switch (HitRange.getManager().getConfig().getRenderMode()) {
+            case LINE -> DEBUG_LINE_STRIP;
+            case THICK -> DEBUG_QUADS;
+            case FILLED -> TRIANGLE_FAN;
+        };
+    }
+
+    public static void drawCircle(MatrixStack.Entry entry, VertexConsumer vertices, PlayerEntityRenderState state) {
         HitRangeConfig config = HitRange.getManager().getConfig();
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
@@ -36,60 +44,51 @@ public class CircleRenderer extends RenderPhase {
 
         int color = config.getColor();
         if (config.isRandomColors()) {
-            color = state.name.hashCode() | 0xFF000000;
-        } else if (config.isColorWhenInRange() && state.id != player.getId() && entityPos.isInRange(player.getPos(), config.getRadius())) {
+            String name = state.playerName == null ? "" : state.playerName.getString();
+            color = name.hashCode() | 0xFF000000;
+        } else if (config.isColorWhenInRange() && state.id != player.getId() && entityPos.isInRange(player.getEntityPos(), config.getRadius())) {
             color = config.getInRangeColor();
         }
 
         float dy = (state.sneaking ? 0.125f : 0) + config.getHeight();
 
-        RenderLayer layer = switch (config.getRenderMode()) {
-            case LINE -> DEBUG_LINE_STRIP;
-            case THICK -> DEBUG_QUADS;
-            case FILLED -> TRIANGLE_FAN;
-        };
-
-        VertexConsumer vertices = vertexConsumers.getBuffer(layer);
-
-        matrices.push();
         switch (config.getRenderMode()) {
-            case LINE -> drawCircleLineStrip(matrices, vertices, dy, color);
-            case THICK -> drawCircleQuad(matrices, vertices, dy, color);
-            case FILLED -> drawCircleTriangleFan(matrices, vertices, dy, color);
+            case LINE -> drawCircleLineStrip(entry, vertices, dy, color);
+            case THICK -> drawCircleQuad(entry, vertices, dy, color);
+            case FILLED -> drawCircleTriangleFan(entry, vertices, dy, color);
         }
-        matrices.pop();
     }
 
-    private static void drawCircleLineStrip(MatrixStack matrices, VertexConsumer vertices, float dy, int argb) {
-        Matrix4f positionMatrix = matrices.peek().getPositionMatrix();
+    private static void drawCircleLineStrip(MatrixStack.Entry entry, VertexConsumer vertices, float dy, int argb) {
+        Matrix4f positionMatrix = entry.getPositionMatrix();
 
         for (Angle angle : angles) {
-            vertices.vertex(positionMatrix, angle.dx, dy, angle.dz).color(argb).normal(matrices.peek(), 0.0f, 0.0f, 0.0f);
+            vertices.vertex(positionMatrix, angle.dx, dy, angle.dz).color(argb).normal(entry, 0.0f, 0.0f, 0.0f);
         }
 
         Angle first = angles.getFirst(); // closes the circle
-        vertices.vertex(positionMatrix, first.dx, dy, first.dz).color(argb).normal(matrices.peek(), 0.0f, 0.0f, 0.0f);
+        vertices.vertex(positionMatrix, first.dx, dy, first.dz).color(argb).normal(entry, 0.0f, 0.0f, 0.0f);
     }
 
-    private static void drawCircleQuad(MatrixStack matrices, VertexConsumer vertices, float dy, int argb) {
-        Matrix4f positionMatrix = matrices.peek().getPositionMatrix();
+    private static void drawCircleQuad(MatrixStack.Entry entry, VertexConsumer vertices, float dy, int argb) {
+        Matrix4f positionMatrix = entry.getPositionMatrix();
 
         for (int i = 1; i < angles.size() + 1; i++) {
             Angle angle = angles.get(i % angles.size());
             Angle prevAngle = angles.get(i - 1);
 
-            vertices.vertex(positionMatrix, prevAngle.dx, dy, prevAngle.dz).color(argb).normal(matrices.peek(), 0.0f, 0.0f, 0.0f);
-            vertices.vertex(positionMatrix, prevAngle.farDx, dy, prevAngle.farDz).color(argb).normal(matrices.peek(), 0.0f, 0.0f, 0.0f);
-            vertices.vertex(positionMatrix, angle.farDx, dy, angle.farDz).color(argb).normal(matrices.peek(), 0.0f, 0.0f, 0.0f);
-            vertices.vertex(positionMatrix, angle.dx, dy, angle.dz).color(argb).normal(matrices.peek(), 0.0f, 0.0f, 0.0f);
+            vertices.vertex(positionMatrix, prevAngle.dx, dy, prevAngle.dz).color(argb).normal(entry, 0.0f, 0.0f, 0.0f);
+            vertices.vertex(positionMatrix, prevAngle.farDx, dy, prevAngle.farDz).color(argb).normal(entry, 0.0f, 0.0f, 0.0f);
+            vertices.vertex(positionMatrix, angle.farDx, dy, angle.farDz).color(argb).normal(entry, 0.0f, 0.0f, 0.0f);
+            vertices.vertex(positionMatrix, angle.dx, dy, angle.dz).color(argb).normal(entry, 0.0f, 0.0f, 0.0f);
         }
     }
 
-    private static void drawCircleTriangleFan(MatrixStack matrices, VertexConsumer vertices, float dy, int argb) {
-        Matrix4f positionMatrix = matrices.peek().getPositionMatrix();
+    private static void drawCircleTriangleFan(MatrixStack.Entry entry, VertexConsumer vertices, float dy, int argb) {
+        Matrix4f positionMatrix = entry.getPositionMatrix();
 
-        vertices.vertex(positionMatrix, 0, dy, 0).color(argb).normal(matrices.peek(), 0.0f, 0.0f, 0.0f);
-        drawCircleLineStrip(matrices, vertices, dy, argb);
+        vertices.vertex(positionMatrix, 0, dy, 0).color(argb).normal(entry, 0.0f, 0.0f, 0.0f);
+        drawCircleLineStrip(entry, vertices, dy, argb);
     }
 
     public static void computeAngles() {

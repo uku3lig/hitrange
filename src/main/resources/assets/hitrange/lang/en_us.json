@@ -1,5 +1,6 @@
 {
   "hitrange.name": "HitRange",
+  "key.category.hitrange.key": "HitRange",
   "hitrange.enabled": "Enabled",
   "hitrange.circleSegments": "Circle Segments",
   "hitrange.radius": "Radius",

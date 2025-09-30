@@ -6,6 +6,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.uku3lig.hitrange.config.HitRangeConfig;
 import net.uku3lig.ukulib.config.ConfigManager;
 import net.uku3lig.ukulib.utils.Ukutils;
@@ -20,7 +21,7 @@ public class HitRange implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        Ukutils.registerToggleBind(new KeyBinding("hitrange.keybind.toggle", GLFW.GLFW_KEY_UNKNOWN, "hitrange.name"),
+        Ukutils.registerToggleBind(new KeyBinding("hitrange.keybind.toggle", GLFW.GLFW_KEY_UNKNOWN, KeyBinding.Category.create(Identifier.of("hitrange", "key"))),
                 () -> manager.getConfig().isEnabled(), b -> manager.getConfig().setEnabled(b), Text.translatable("hitrange.keybind.toggle.msg"));
     }
 }

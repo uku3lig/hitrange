@@ -18,7 +18,7 @@ public class MixinMinecraftClient {
         HitRangeConfig config = HitRange.getManager().getConfig();
 
         if (config.isNearestOnly() && player != null) {
-            PlayerEntity nearest = player.getWorld().getClosestPlayer(player.getX(), player.getY(), player.getZ(), config.getMaxSearchDistance(), e -> !e.equals(player));
+            PlayerEntity nearest = player.getEntityWorld().getClosestPlayer(player.getX(), player.getY(), player.getZ(), config.getMaxSearchDistance(), e -> !e.equals(player));
             HitRange.setNearest(nearest);
         }
     }
