@@ -56,7 +56,7 @@ public class MixinWorldRenderer {
 
         matrices.push();
         matrices.translate(this.playerPos);
-        queue.submitCustom(matrices, CircleRenderer.getCurrentLayer(), (entry, vertices) -> CircleRenderer.drawCircle(entry, vertices, state));
+        queue.submitCustom(matrices, CircleRenderer.getCurrentLayer(state), (entry, vertices) -> CircleRenderer.drawCircle(entry, vertices, state));
         matrices.pop();
     }
 }

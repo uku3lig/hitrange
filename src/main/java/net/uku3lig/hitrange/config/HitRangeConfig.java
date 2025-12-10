@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minecraft.util.TranslatableOption;
+import net.uku3lig.ukulib.config.option.StringTranslatable;
 
 import java.io.Serializable;
 
@@ -33,13 +33,13 @@ public class HitRangeConfig implements Serializable {
 
     @Getter
     @AllArgsConstructor
-    public enum RenderMode implements TranslatableOption {
-        LINE(0, "hitrange.mode.line"),
-        THICK(1, "hitrange.mode.thick"),
-        FILLED(2, "hitrange.mode.filled"),
+    public enum RenderMode implements StringTranslatable {
+        LINE("line", "hitrange.mode.line"),
+        THICK("thick", "hitrange.mode.thick"),
+        FILLED("filled", "hitrange.mode.filled"),
         ;
 
-        private final int id;
+        private final String name;
         private final String translationKey;
     }
 }

@@ -29,10 +29,12 @@ public abstract class MixinLivingEntityRenderer {
         if (!(state instanceof PlayerEntityRenderState playerState)) return;
         if (!config.isEnabled() || player == null || player.getId() == playerState.id) return;
         if (!pos.isInRange(player.getEntityPos(), config.getMaxDistance())) return;
-        if (config.isNearestOnly() && (HitRange.getNearest() == null || HitRange.getNearest().getId() != playerState.id)) return;
-        if (playerState.deathTime > 0.0f || playerState.invisibleToPlayer || playerState.sleepingDirection != null) return;
+        if (config.isNearestOnly() && (HitRange.getNearest() == null || HitRange.getNearest().getId() != playerState.id))
+            return;
+        if (playerState.deathTime > 0.0f || playerState.invisibleToPlayer || playerState.sleepingDirection != null)
+            return;
 
-        orderedRenderCommandQueue.submitCustom(matrices, CircleRenderer.getCurrentLayer(),
+        orderedRenderCommandQueue.submitCustom(matrices, CircleRenderer.getCurrentLayer(playerState),
                 (entry, vertices) -> CircleRenderer.drawCircle(entry, vertices, playerState));
     }
 }

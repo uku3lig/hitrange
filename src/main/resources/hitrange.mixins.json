@@ -2,13 +2,14 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.uku3lig.hitrange.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],
   "client": [
-    "MixinMinecraftClient",
     "MixinLivingEntityRenderer",
-    "MixinWorldRenderer"
+    "MixinMinecraftClient",
+    "MixinWorldRenderer",
+    "RenderLayerAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
