@@ -7,9 +7,9 @@
   ],
   "client": [
     "MixinLivingEntityRenderer",
-    "MixinMinecraftClient",
-    "MixinWorldRenderer",
-    "RenderLayerAccessor"
+    "MixinMinecraft",
+    "MixinLevelRenderer",
+    "RenderTypeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

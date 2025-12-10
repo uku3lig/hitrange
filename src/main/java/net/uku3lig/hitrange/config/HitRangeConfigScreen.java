@@ -1,7 +1,7 @@
 package net.uku3lig.hitrange.config;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tab.Tab;
+import net.minecraft.client.gui.components.tabs.Tab;
+import net.minecraft.client.gui.screens.Screen;
 import net.uku3lig.hitrange.CircleRenderer;
 import net.uku3lig.hitrange.HitRange;
 import net.uku3lig.ukulib.config.option.*;
