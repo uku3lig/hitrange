@@ -15,7 +15,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.uku3lig.hitrange.HitRange"
+      "net.uku3lig.hitrange.fabric.HitRangeFabric"
     ],
     "ukulib": [
       "net.uku3lig.hitrange.UkulibHook"

@@ -1,0 +1,36 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "hitrange"
+displayName = "HitRange"
+version = "${version}"
+
+logoFile = "assets/hitrange/icon.png"
+authors = "uku"
+description = "show a circle around players' feet"
+
+[[dependencies.hitrange]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.1,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.hitrange]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.1.0.0,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.hitrange]]
+modId = "ukulib"
+type = "required"
+versionRange = "[2.0.0,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[mixins]]
+config = "hitrange.mixins.json"
