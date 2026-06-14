@@ -6,9 +6,10 @@
   "mixins": [
   ],
   "client": [
+    "MixinLevelExtractor",
+    "MixinLevelRenderer",
     "MixinLivingEntityRenderer",
     "MixinMinecraft",
-    "MixinLevelRenderer",
     "RenderTypeAccessor"
   ],
   "injectors": {

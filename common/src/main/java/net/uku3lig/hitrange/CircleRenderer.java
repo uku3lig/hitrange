@@ -135,12 +135,11 @@ public class CircleRenderer {
         }
     }
 
-    private static RenderType makeType(RenderPipeline pipeline, @Nullable String postfix) {
+    private static RenderType makeType(RenderPipeline pipeline, @Nullable String suffix) {
         String name = "hitrange_" + pipeline.getClass().getSimpleName().toLowerCase(Locale.ROOT);
-        if (postfix != null) name += "_" + postfix;
+        if (suffix != null) name += "_" + suffix;
 
         RenderSetup setup = RenderSetup.builder(pipeline)
-                .sortOnUpload()
                 .useLightmap()
                 .useOverlay()
                 .setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
