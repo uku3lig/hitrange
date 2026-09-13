@@ -1,14 +1,15 @@
 package net.uku3lig.hitrange;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.oit.OitPipelineSet;
 import net.minecraft.client.renderer.rendertype.LayeringTransform;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -24,8 +25,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class CircleRenderer {
-    private static final RenderType LINES = makeType(RenderPipelines.LINES, null);
-    private static final RenderType QUADS = makeType(RenderPipelines.DEBUG_QUADS, null);
+    private static final RenderType LINES = makeType(RenderPipelines.LINES, RenderPipelines.OIT_LINES_TRANSLUCENT, null);
+    private static final RenderType QUADS = makeType(RenderPipelines.DEBUG_QUADS, RenderPipelines.OIT_DEBUG_QUADS,null);
     private static final Int2ObjectMap<RenderType> PLAYER_TRIANGLE_FANS = new Int2ObjectOpenHashMap<>();
 
     private static final List<Angle> angles = new ArrayList<>();
@@ -39,7 +40,7 @@ public class CircleRenderer {
             case LINE -> LINES;
             case THICK -> QUADS;
             case FILLED ->
-                    PLAYER_TRIANGLE_FANS.computeIfAbsent(state.id, i -> makeType(RenderPipelines.DEBUG_TRIANGLE_FAN, String.valueOf(i)));
+                    PLAYER_TRIANGLE_FANS.computeIfAbsent(state.id, i -> makeType(RenderPipelines.DEBUG_TRIANGLE_FAN, RenderPipelines.OIT_DEBUG_TRIANGLE_FAN, String.valueOf(i)));
         };
     }
 
@@ -135,13 +136,14 @@ public class CircleRenderer {
         }
     }
 
-    private static RenderType makeType(RenderPipeline pipeline, @Nullable String suffix) {
+    private static RenderType makeType(RenderPipeline pipeline, OitPipelineSet oitPipelineSet, @Nullable String suffix) {
         String name = "hitrange_" + pipeline.getClass().getSimpleName().toLowerCase(Locale.ROOT);
         if (suffix != null) name += "_" + suffix;
 
         RenderSetup setup = RenderSetup.builder(pipeline)
                 .useLightmap()
                 .useOverlay()
+                .setOitPipelines(oitPipelineSet)
                 .setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
                 .createRenderSetup();
 

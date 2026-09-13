@@ -1,5 +1,6 @@
 package net.uku3lig.hitrange;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.KeyMapping;
@@ -10,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import net.uku3lig.hitrange.config.HitRangeConfig;
 import net.uku3lig.ukulib.config.ConfigManager;
 import net.uku3lig.ukulib.utils.Ukutils;
-import org.lwjgl.glfw.GLFW;
 
 public class HitRange  {
     @Getter
@@ -21,7 +21,7 @@ public class HitRange  {
     public static Vec3 playerPos = Vec3.ZERO;
 
     public static void onInitialize() {
-        Ukutils.registerToggleBind(new KeyMapping("hitrange.keybind.toggle", GLFW.GLFW_KEY_UNKNOWN, KeyMapping.Category.register(Identifier.fromNamespaceAndPath("hitrange", "key"))),
+        Ukutils.registerToggleBind(new KeyMapping("hitrange.keybind.toggle", InputConstants.UNKNOWN.getValue(), KeyMapping.Category.register(Identifier.fromNamespaceAndPath("hitrange", "key"))),
                 () -> manager.getConfig().isEnabled(), b -> manager.getConfig().setEnabled(b), Component.translatable("hitrange.keybind.toggle.msg"));
     }
 }
