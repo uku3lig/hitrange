@@ -7,28 +7,29 @@ modId = "hitrange"
 displayName = "HitRange"
 version = "${version}"
 
-logoFile = "assets/hitrange/icon.png"
+iconFile = "assets/hitrange/icon.png"
 authors = "uku"
 description = "show a circle around players' feet"
+displayURL = "https://modrinth.com/project/b9olMQ2D"
 
 [[dependencies.hitrange]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.2,)"
+versionRange = "[26.3,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.hitrange]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.2.0.0-beta,)"
+versionRange = "[26.3.0.0-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.hitrange]]
 modId = "ukulib"
 type = "required"
-versionRange = "[2.1.0,3)"
+versionRange = "[2.2.0,3)"
 ordering = "NONE"
 side = "CLIENT"
 
