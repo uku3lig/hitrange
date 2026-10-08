@@ -7,6 +7,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.phys.Vec3;
 import net.uku3lig.hitrange.config.HitRangeConfig;
 import net.uku3lig.ukulib.config.ConfigManager;
@@ -19,6 +20,7 @@ public class HitRange  {
     @Getter @Setter
     private static Player nearest;
     public static Vec3 playerPos = Vec3.ZERO;
+    public static AttackRange attackRange = null;
 
     public static void onInitialize() {
         Ukutils.registerToggleBind(new KeyMapping("hitrange.keybind.toggle", InputConstants.UNKNOWN.getValue(), KeyMapping.Category.register(Identifier.fromNamespaceAndPath("hitrange", "key"))),

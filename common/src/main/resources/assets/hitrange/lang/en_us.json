@@ -4,6 +4,7 @@
   "hitrange.enabled": "Enabled",
   "hitrange.circleSegments": "Circle Segments",
   "hitrange.radius": "Radius",
+  "hitrange.radiusFromReach": "Radius From Reach",
   "hitrange.renderMode": "Render Mode",
   "hitrange.thickness": "Thickness",
   "hitrange.color": "Color",

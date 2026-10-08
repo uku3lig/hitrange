@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.component.AttackRange;
 import net.uku3lig.ukulib.config.option.StringTranslatable;
 
 import java.io.Serializable;
@@ -16,6 +18,7 @@ public class HitRangeConfig implements Serializable {
     // general
     private boolean enabled = true;
     private float radius = 3.0f;
+    private boolean radiusFromReach = true;
     private RenderMode renderMode = RenderMode.THICK;
     private float thickness = 0.15f;
     private float height = 0.0f;
@@ -30,6 +33,12 @@ public class HitRangeConfig implements Serializable {
     private int circleSegments = 60;
     private int maxDistance = 100;
     private int maxSearchDistance = 50;
+
+    public float getEffectiveRadius(AttackRange range) {
+        return this.isRadiusFromReach() && range != null
+                ? range.effectiveMaxRange(Minecraft.getInstance().player)
+                : this.getRadius();
+    }
 
     @Getter
     @AllArgsConstructor

@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.rendertype.LayeringTransform;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.phys.Vec3;
 import net.uku3lig.hitrange.config.HitRangeConfig;
 import net.uku3lig.hitrange.mixin.RenderTypeAccessor;
@@ -26,13 +27,13 @@ import java.util.Locale;
 
 public class CircleRenderer {
     private static final RenderType LINES = makeType(RenderPipelines.LINES, RenderPipelines.OIT_LINES_TRANSLUCENT, null);
-    private static final RenderType QUADS = makeType(RenderPipelines.DEBUG_QUADS, RenderPipelines.OIT_DEBUG_QUADS,null);
+    private static final RenderType QUADS = makeType(RenderPipelines.DEBUG_QUADS, RenderPipelines.OIT_DEBUG_QUADS, null);
     private static final Int2ObjectMap<RenderType> PLAYER_TRIANGLE_FANS = new Int2ObjectOpenHashMap<>();
 
     private static final List<Angle> angles = new ArrayList<>();
 
     static {
-        computeAngles();
+        computeAngles(null);
     }
 
     public static RenderType getCurrentType(AvatarRenderState state) {
@@ -55,7 +56,7 @@ public class CircleRenderer {
         if (config.isRandomColors()) {
             String name = state.scoreText == null ? "" : state.scoreText.getString();
             color = name.hashCode() | 0xFF000000;
-        } else if (config.isColorWhenInRange() && state.id != player.getId() && entityPos.closerThan(player.position(), config.getRadius())) {
+        } else if (config.isColorWhenInRange() && state.id != player.getId() && entityPos.closerThan(player.position(), config.getEffectiveRadius(HitRange.attackRange))) {
             color = config.getInRangeColor();
         }
 
@@ -108,14 +109,15 @@ public class CircleRenderer {
         vertices.addVertex(positionMatrix, first.dx, dy, first.dz).setColor(argb).setNormal(entry, 0.0f, 0.0f, 0.0f);
     }
 
-    public static void computeAngles() {
+    public static void computeAngles(AttackRange attackRange) {
         angles.clear();
         HitRangeConfig config = HitRange.getManager().getConfig();
+        float radius = config.getEffectiveRadius(attackRange);
 
         if (config.getRenderMode() == HitRangeConfig.RenderMode.THICK) {
             for (int i = 0; i < config.getCircleSegments(); i++) {
                 float angle = 2.0f * Mth.PI * ((float) i / config.getCircleSegments());
-                float dst = config.getRadius() - (config.getThickness() / 2);
+                float dst = radius - (config.getThickness() / 2);
 
                 float dx = dst * Mth.sin(angle);
                 float dz = dst * Mth.cos(angle);
@@ -128,8 +130,8 @@ public class CircleRenderer {
         } else {
             for (int i = 0; i < config.getCircleSegments(); i++) {
                 float angle = 2.0f * Mth.PI * ((float) i / config.getCircleSegments());
-                float dx = config.getRadius() * Mth.sin(angle);
-                float dz = config.getRadius() * Mth.cos(angle);
+                float dx = radius * Mth.sin(angle);
+                float dz = radius * Mth.cos(angle);
 
                 angles.add(new Angle(dx, dz));
             }

@@ -21,7 +21,7 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
     @Override
     public void removed() {
         super.removed();
-        CircleRenderer.computeAngles();
+        CircleRenderer.computeAngles(HitRange.attackRange);
     }
 
     private class GeneralTab extends ButtonTab<HitRangeConfig> {
@@ -34,6 +34,7 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
             return new WidgetCreator[]{
                     CyclingOption.ofBoolean("hitrange.enabled", config.isEnabled(), config::setEnabled),
                     new SliderOption("hitrange.radius", config.getRadius(), d -> config.setRadius((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0.05, 5, 0.05),
+                    CyclingOption.ofBoolean("hitrange.radiusFromReach", config.isRadiusFromReach(), config::setRadiusFromReach),
                     CyclingOption.ofTranslatableEnum("hitrange.renderMode", HitRangeConfig.RenderMode.class, config.getRenderMode(), config::setRenderMode),
                     new SliderOption("hitrange.thickness", config.getThickness(), d -> config.setThickness((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0.01, 2, 0.01),
                     new SliderOption("hitrange.height", config.getHeight(), d -> config.setHeight((float) d), SliderOption.DEFAULT_VALUE_TO_TEXT, 0, 5, 0.01),
@@ -72,7 +73,7 @@ public class HitRangeConfigScreen extends TabbedConfigScreen<HitRangeConfig> {
                     new IntSliderOption("hitrange.circleSegments", config.getCircleSegments(), config::setCircleSegments, IntSliderOption.DEFAULT_INT_TO_TEXT, 3, 180),
                     new IntSliderOption("hitrange.maxSearchDistance", config.getMaxSearchDistance(), config::setMaxSearchDistance, IntSliderOption.DEFAULT_INT_TO_TEXT, 1, 100),
                     new IntSliderOption("hitrange.maxDistance", config.getMaxDistance(), config::setMaxDistance, IntSliderOption.DEFAULT_INT_TO_TEXT, 1, 200),
-                    new SimpleButton("hitrange.computeAngles", _ -> CircleRenderer.computeAngles()),
+                    new SimpleButton("hitrange.computeAngles", _ -> CircleRenderer.computeAngles(HitRange.attackRange)),
             };
         }
     }
